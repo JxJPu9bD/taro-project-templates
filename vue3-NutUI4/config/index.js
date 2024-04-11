@@ -1,9 +1,9 @@
 import Components from 'unplugin-vue-components/webpack';
-import NutUIResolver from '@nutui/nutui-taro/dist/resolver';
+import NutUIResolver from '@nutui/auto-import-resolver';
 
 const config = {
-  projectName: '<%= projectName %>',
-  date: '<%= date %>',
+  projectName: '{{ projectName }}',
+  date: '{{ date }}',
   designWidth (input) {
     if (input?.file?.replace(/\\+/g, '/').indexOf('@nutui') > -1) {
       return 375
@@ -27,21 +27,23 @@ const config = {
     options: {
     }
   },
-  framework: '<%= framework %>',
+  framework: '{{ to_lower_case framework }}',
   compiler: {
-    type: '<%= compiler %>',
+    type: '{{ to_lower_case compiler }}',
     prebundle: { enable: false }
-  }, <% if (compiler === 'webpack5') {%>
-  cache: {
-    enable: false // Webpack 持久化缓存配置，建议开启。默认配置请参考：https://docs.taro.zone/docs/config-detail#cache
-  },<%}%>
+  },
   sass:{
     data: `@import "@nutui/nutui-taro/dist/styles/variables.scss";`
   },
   mini: {
     webpackChain(chain) {
       chain.plugin('unplugin-vue-components').use(Components({
-        resolvers: [NutUIResolver({taro: true})]
+        resolvers: [
+          NutUIResolver({
+            importStyle: 'sass',
+            taro: true
+          })
+        ]
       }))
     },
     postcss: {
@@ -69,7 +71,12 @@ const config = {
   h5: {
     webpackChain(chain) {
       chain.plugin('unplugin-vue-components').use(Components({
-        resolvers: [NutUIResolver({taro: true})]
+        resolvers: [
+          NutUIResolver({
+            importStyle: 'sass',
+            taro: true
+          })
+        ]
       }))
     },
     publicPath: '/',
