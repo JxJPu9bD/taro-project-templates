@@ -1,17 +1,10 @@
 <template>
-  <view class="{{ pageName }}">
-    <Counter />
+  <view class="<%= pageName %>">
+    works
   </view>
 </template>
 
-<script>
-import './index.{{ cssExt }}'
-import Counter from '../../components/Counter.vue'
+<script setup lang="ts">
+import './index.<%= cssExt %>'
 
-export default {
-  name: 'Index',
-  components: {
-    Counter
-  }
-}
 </script>
